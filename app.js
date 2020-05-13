@@ -26,9 +26,9 @@ client.on('message', message => {
                         .addFields(
                             { name: 'Active cases', value: TNData.active },
                             { name: 'Total cases', value: TNData.confirmed },
-                            { name: 'New cases', value: TNData.deltaconfirmed },
+                            { name: 'New cases', value: TNData.deltaconfirmed, inline: true },
                             { name: 'Total deaths', value: TNData.deaths },
-                            { name: 'New deaths', value: TNData.deltadeaths },
+                            { name: 'New deaths', value: TNData.deltadeaths, inline: true },
                             { name: 'Last updated', value: TNData.lastupdatedtime },
                         )
                         .setFooter('Note: *API can be a little slow/weird, so be forgiving*');
