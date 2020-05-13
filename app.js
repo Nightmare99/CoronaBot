@@ -11,8 +11,8 @@ client.once('ready', () => {
 client.login(process.env.BOT_TOKEN);
 
 client.on('message', message => {
-    // message.react('ðŸ‘º');
     parts = message.content.split(' ');
+    if (message.author.bot) return;
     if (parts[0] == '/srinath') {
         if (parts[1].toUpperCase() == 'CORONA' || parts[1].toUpperCase() == 'COVID') {
             fetch('https://api.covid19india.org/data.json')
@@ -20,13 +20,19 @@ client.on('message', message => {
                 .then((data) => {
                     var stateData = data.statewise;
                     var TNData = _.find(stateData, { statecode: "TN" });
-                    var msg = "Today's COVID stats for TN: \n";
-                    msg += "Active cases: " + TNData.active + "\n";
-                    msg += "Total cases: " + TNData.confirmed + "\n";
-                    msg += "New cases: " + TNData.deltaconfirmed + "\n";
-                    msg += "Total deaths: " + TNData.deaths + "\n";
-                    msg += "New deaths: " + TNData.deltadeaths + "\n"
-                    message.channel.send(msg);
+                    const embed = new Discord.MessageEmbed()
+                        .setColor('#0099ff')
+                        .setTitle("Today's COVID stats for TN:")
+                        .addFields(
+                            { name: 'Active cases', value: TNData.active },
+                            { name: 'Total cases', value: TNData.confirmed },
+                            { name: 'New cases', value: TNData.deltaconfirmed },
+                            { name: 'Total deaths', value: TNData.deaths },
+                            { name: 'New deaths', value: TNData.deltadeaths },
+                            { name: 'Last updated', value: TNData.lastupdatedtime },
+                        )
+                        .setFooter('Note: *API can be a little slow/weird, so be forgiving*');
+                    message.channel.send(embed);
                 });
         }
         else message.channel.send('Dei puriyara maadhri sollu da');
